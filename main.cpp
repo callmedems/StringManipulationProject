@@ -39,10 +39,10 @@ int main() {
                   << countWords(pride) << "\n";
         cout<< "Sense and Sensibility word count: "
                   << countWords(sense) << "\n";
-        //Stage two
+        //Stage two: Clenaing text for analysis
         pride = cleanText(pride);
         sense = cleanText(sense);
-
+        cout << "CLEAN VERSION: \n ";
         cout << "Pride and Prejudice word count after cleaning: "
              << countWords(pride) << "\n";
 
