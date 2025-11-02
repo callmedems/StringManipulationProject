@@ -5,19 +5,12 @@
 #include <vector>
 #include <algorithm>
 #include <cctype>
+#include "cleanText.hpp"
 
 using namespace std;
 
-// Lee todo el archivo en un string
-string readFile(const string& filename) {
-    ifstream in(filename);
-    if (!in.is_open()) throw runtime_error("Error opening file: " + filename);
-    ostringstream ss;
-    ss << in.rdbuf();
-    return ss.str();
-}
 
-// Cuenta el número de palabras en un texto
+//Counts number of words 
 size_t countWords(const string& text) {
     size_t wordCount = 0;
     bool inWord = false;
@@ -38,13 +31,26 @@ size_t countWords(const string& text) {
 
 int main() {
     try {
+        //Stage one 
         string pride = readFile("../texts/prideAndPrejudice.txt");
         string sense = readFile("../texts/senseAndSensibility.txt");
 
-        cout << "Pride and Prejudice word count: "
+        cout<< "Pride and Prejudice word count: "
                   << countWords(pride) << "\n";
-        cout << "Sense and Sensibility word count: "
+        cout<< "Sense and Sensibility word count: "
                   << countWords(sense) << "\n";
+        //Stage two
+        pride = cleanText(pride);
+        sense = cleanText(sense);
+
+        cout << "Pride and Prejudice word count after cleaning: "
+             << countWords(pride) << "\n";
+
+        cout << "Sense and Sensibility word count after cleaning "
+             << countWords(sense) << "\n";
+
+
+        
 
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << "\n";
