@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include "cleanText.hpp"
+#include "lcs.hpp"
 
 using namespace std;
 
@@ -32,8 +33,8 @@ size_t countWords(const string& text) {
 int main() {
     try {
         //Stage one 
-        string pride = readFile("../texts/prideAndPrejudice.txt");
-        string sense = readFile("../texts/senseAndSensibility.txt");
+        string pride = readFile("./texts/prideAndPrejudice.txt");
+        string sense = readFile("./texts/senseAndSensibility.txt");
 
         cout<< "Pride and Prejudice word count: "
                   << countWords(pride) << "\n";
@@ -43,11 +44,19 @@ int main() {
         pride = cleanText(pride);
         sense = cleanText(sense);
         cout << "CLEAN VERSION: \n ";
+
+
         cout << "Pride and Prejudice word count after cleaning: "
              << countWords(pride) << "\n";
 
         cout << "Sense and Sensibility word count after cleaning "
              << countWords(sense) << "\n";
+
+       //Stage three; finding the lcs between texts
+
+        cout << "Measures using longest coomon substring: \n ";
+
+        lcsComparision(pride, sense, "Pride and Prejudice", "Sense and Sensibility");
 
 
         

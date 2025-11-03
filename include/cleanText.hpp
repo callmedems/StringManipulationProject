@@ -14,7 +14,6 @@ string readFile(const string& filename);
 // Removes project Gutenberg metadata 
 string removePG_header(const string& text);
 
-
 // Performs normalization: lowercase
 string normalize(const string& input);
 
