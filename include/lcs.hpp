@@ -16,6 +16,8 @@ void lcsComparision(const string& text1, const string& text2,
 //similarity analysis using longest common subsequence
 int longestCommonSubsequence(const string& text1, const string& text2);
 
+
+//Get the longest common subsequence
 string getLCSString(const string& text1, const string& text2);
 
 void lcsBlockComparison(const string& text1, const string&  text2, const string& name1, const string& name2);

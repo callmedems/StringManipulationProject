@@ -40,8 +40,8 @@ void lcsComparision(const string& text1, const string& text2,
 const string& name1, const string& name2) {
     cout << "Finding longest common substring\n";
 
-    const size_t maxText_size = 15000; // Si ambos son menores, lo corremos sin muestreo
-    size_t sampleSize = 8000;              // Tamaño de la ventana de comparación
+    const size_t maxText_size = 15000; //Numero de caracteres tolerado sin overlap
+    size_t sampleSize = 8000;              // Tamaño de chrts de la ventana de comparación
     size_t overlap = 2000;                 // Solapamiento entre ventanas
 
     size_t n1 = text1.size();
@@ -53,7 +53,7 @@ const string& name1, const string& name2) {
 
     // execute lcs if texts are not too large)
     if (n1 <= maxText_size && n2 <= maxText_size) {
-        cout << "Texts are small enough, running full O(N*M) algorithm.\n";
+        cout << "Texts are small enough, run lcs\n";
         bestSubstring = lcSubString(text1, text2);
         bestLen = bestSubstring.size();
         
@@ -105,7 +105,7 @@ const string& name1, const string& name2) {
     }
 
     // Imprimir el fragmento
-    cout << "LCS Fragment:\n";
+    cout <<"LCS Fragment:\n";
     if (bestSubstring.size() > 300)
         cout << bestSubstring.substr(0, 300) << "...\n";
     else
@@ -190,9 +190,7 @@ void lcsBlockComparison(const string& text1, const string& text2, const string& 
     
     cout << "Computing Longest Common Subsequence (word-level)...\n";
     cout << "Note: LCS finds words that appear in the same order, even if not consecutive.\n\n";
-    
-    auto startTime = chrono::high_resolution_clock::now();
-    
+        
     // Split into words
     vector<string> words1 = splitIntoWords(text1);
     vector<string> words2 = splitIntoWords(text2);
@@ -201,62 +199,92 @@ void lcsBlockComparison(const string& text1, const string& text2, const string& 
     cout << "Text 2 (" << name2 << "): " << words2.size() << " words\n\n";
     
     // For large texts, use sampling
-    const size_t MAX_WORDS = 2000;
+    const size_t MAX_WORDS = 8000;
+    const size_t sample_size = 6000;
+    const size_t sample_overlap = 4800;
     
-    vector<string> sample1 = words1;
-    vector<string> sample2 = words2;
+    size_t bestLcSub=0;
+    vector<string> subseqWords;
+
+    auto startTime = chrono::high_resolution_clock::now();
+    if (words1.size() <= MAX_WORDS && words2.size() <= MAX_WORDS) {
+        cout << "Both texts are within the word limit. Running full LCS computation.\n";
+        bestLcSub= longestCommonSubsequenceWords(words1, words2);
+        subseqWords = getLCSWords(words1, words2);
+    }else{
+        cout << "Running overlapping word sampling" << sample_size 
+             << ", Overlap: " << sample_overlap<< ").\n";
+
+        size_t step= sample_size - sample_overlap;
+
+        if (step==0) step=1;
+        for (size_t i = 0; i < words1.size(); i += step) {
+            // Extraer bloque 1
+            size_t end_idx1 = min(i + sample_size, words1.size());
+            vector<string> block1(words1.begin() + i, words1.begin() + end_idx1);
+
+            // Iterar sobre el texto 2
+            for (size_t j = 0; j < words2.size(); j += step) {
+
+                // Extraer bloque 2
+                size_t end_idx2 = min(j + sample_size, words2.size());
+                vector<string> block2(words2.begin() + j, words2.begin() + end_idx2);
+
+                //getLCSWords para obtener tanto la longitud como la subsecuencia
+                vector<string> currentLCSWords = getLCSWords(block1, block2);
+                size_t currentLCS = currentLCSWords.size();
+                
+                // Actualizar el mejor LCS global
+                if (currentLCS > bestLcSub) {
+                    bestLcSub = currentLCS;
+                    subseqWords = currentLCSWords;
+                }
+            }
+            // Si ya se ha cubierto el final del texto, salimos
+            if (end_idx1 == words1.size()) break; 
+        }
     
-    if (words1.size() > MAX_WORDS) {
-        sample1 = vector<string>(words1.begin(), words1.begin() + MAX_WORDS);
-        cout << "Using first " << MAX_WORDS << " words from " << name1 << " (sample)\n";
-    }
-    
-    if (words2.size() > MAX_WORDS) {
-        sample2 = vector<string>(words2.begin(), words2.begin() + MAX_WORDS);
-        cout << "Using first " << MAX_WORDS << " words from " << name2 << " (sample)\n";
+
     }
     
     cout << "\nComparing texts...\n";
     
-    // Compute LCS
-    int lcsLength = longestCommonSubsequenceWords(sample1, sample2);
-    vector<string> lcsWords = getLCSWords(sample1, sample2);
     
     auto endTime = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
-    
-    // Calculate similarity
-    size_t avgWords = (sample1.size() + sample2.size()) / 2;
-    double similarityPercent = (static_cast<double>(lcsLength) / avgWords) * 100.0;
+
+    size_t totalWordsAvg = (words1.size() + words2.size()) / 2;
+    // Si bestLCS es 0, evitamos la división por cero
+    double similarityPercent = (totalWordsAvg > 0) ? (static_cast<double>(bestLcSub) / totalWordsAvg) * 100.0 : 0.0;
     
     // Report results
-    cout << "\n" << string(60, '-') << "\n";
     cout << "RESULTS:\n";
-    cout << string(60, '-') << "\n";
-    cout << "Longest Common Subsequence Length: " << lcsLength << " words\n";
+    cout << "Longest Common Subsequence Length: " << bestLcSub << " words\n";
     cout << "Similarity Percentage: " << fixed << setprecision(2) 
               << similarityPercent << "%\n";
     cout << "Execution Time: " << duration.count() << " ms\n";
     cout << string(60, '-') << "\n\n";
     
     // Display fragment
-    if (!lcsWords.empty()) {
-        cout << "LCS Fragment Preview (first 50 words):\n";
+    if (!subseqWords.empty()) {
+        cout << "LCS Fragment Preview (first 150 words):\n";
         cout << "\"";
         
-        size_t wordsToShow = min(size_t(50), lcsWords.size());
-        for (size_t i = 0; i < wordsToShow; i++) {
-            cout << lcsWords[i];
-            if (i < wordsToShow - 1) cout << " ";
+        size_t showWords = min(size_t(150), subseqWords.size());
+        for (size_t i = 0; i <showWords; i++) {
+            cout << subseqWords[i];
+            if (i < showWords -1) cout << " ";
         }
         
-        if (lcsWords.size() > 50) {
+        if (subseqWords.size() > 50) {
             cout << " ...";
         }
         cout << "\"\n\n";
         
-        cout << "Total LCS words found: " << lcsWords.size() << "\n";
+        cout << "Total LCS words found: " << subseqWords.size() << "\n";
     } else {
         cout << "No common subsequence found.\n";
     }
+    
+    
 }

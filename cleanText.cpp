@@ -79,7 +79,7 @@ string normalize(const string& input) {
 // Stopword removal
 string stopwords(const string& text) {
     static const unordered_set<string> textStopwords = {
-        "the","a","an","and","or","but","in","on","at","to","for","of","with","by","from","as","is","was","were","be","been","being","have","has","had","do","does","did","will","would","should","could","may","might","must","can","shall","it","its","this","that","these","those","i","you","he","she","we","they","him","her","us","them","his","hers","our","their","what","which","who","when","where","why","how","if","then","than","so","said", "illustration"
+        "the","a","an","and","or","but","in","on","at","to","for","of","with","by","from","as","is","was","were","be","been","being","have","has","had","do","does","did","will","would","should","could","may","might","must","can","shall","it","its","this","that","these","those","i","you","he","she","we","they","him","her","us","them","his","hers","our","their","what","which","who","when","where","why","how","if","then","than","so","said", "illustration", "chapter", "mr", "mrs", "miss", "ms", "there", "too", "not", "me", "no", "my", "your", "all", "any", "some", "such", "only", "own", "same", "other", "more", "most", "many", "much", "very", "just", "even", "also", "oh", "am", "sir", "lady"
     };
 
     istringstream iss(text);
