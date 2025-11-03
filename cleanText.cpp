@@ -27,14 +27,12 @@ string removePG_header(const string& text) {
     size_t start_pos = 0;
 
     if (regex_search(cleaned, start_match, start_pattern)) {
-        // Encontrar el salto de línea siguiente al marcador de inicio
         start_pos = cleaned.find('\n', start_match.position());
         if (start_pos != string::npos)
             cleaned = cleaned.substr(start_pos + 1);
     }
 
-    // --- Buscar fin (footer) ---
-    // Este patrón detecta "*** END OF THE PROJECT GUTENBERG EBOOK ..." (cualquier variante)
+    //
     regex end_pattern(R"(\*\*\*\s*END OF[^*]+EBOOK[^*]+\*\*\*)", regex_constants::icase);
     smatch end_match;
     if (regex_search(cleaned, end_match, end_pattern)) {
