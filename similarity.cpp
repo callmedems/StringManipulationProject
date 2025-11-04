@@ -10,9 +10,7 @@
 
 using namespace std;
 
-// ============================================================
 // STAGE 5: LEVENSHTEIN EDIT DISTANCE
-// ============================================================
 
 // Calculate Levenshtein Distance between two strings
 // Returns the minimum number of single-character edits (insertions, deletions, substitutions)
@@ -132,15 +130,10 @@ const string& name1, const string& name2) {
     cout << "Similarity percentage: " << fixed << setprecision(4)
          << similarity << "%\n";
     cout << "Runtime: " << elapsed_ms << " ms\n\n";
-    
-    cout << "Note: Levenshtein measures minimum edits needed to transform one text into another.\n";
-    cout << "      Lower distance = more similar texts.\n";
     cout << "========================================\n\n";
 }
 
-// ============================================================
 // STAGE 5: JACCARD SIMILARITY WITH N-GRAMS
-// ============================================================
 
 // Generate n-grams from text
 unordered_set<string> generateNGrams(const string& text, int n) {
@@ -221,7 +214,7 @@ const string& name1, const string& name2) {
     
     auto start = chrono::high_resolution_clock::now();
     
-    // Test with different n-gram sizes
+    // testing with different n-gram sizes
     vector<int> ngramSizes = {3, 5, 10};
     
     cout << "Computing Jaccard similarity with character n-grams:\n";
@@ -267,8 +260,5 @@ const string& name1, const string& name2) {
     cout << "Jaccard similarity: " << fixed << setprecision(4)
          << primarySimilarity << "%\n";
     cout << "Runtime: " << elapsed_ms << " ms\n\n";
-    
-    cout << "Note: Jaccard similarity = |Intersection| / |Union| of n-gram sets.\n";
-    cout << "      Ranges from 0% (no overlap) to 100% (identical).\n";
     cout << "========================================\n\n";
 }

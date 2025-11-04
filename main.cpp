@@ -51,19 +51,17 @@ int main() {
         string pride = readFile("./texts/prideAndPrejudice.txt");
         string sense = readFile("./texts/senseAndSensibility.txt");
 
-        cout << "Original Text Statistics:\n";
+        cout << "Original Text Wordcount:\n";
         cout << "  - Pride and Prejudice:      " << countWords(pride) << " words\n";
         cout << "  - Sense and Sensibility:    " << countWords(sense) << " words\n";
         
         // Stage 2: Text Preprocessing
         printHeader("STAGE 2: TEXT PREPROCESSING");
         
-        cout << "Applying text cleaning techniques...\n";
-        
         pride = cleanText(pride);
         sense = cleanText(sense);
 
-        cout << "Cleaned Text Statistics:\n";
+        cout << "Cleaned Text Wordcount:\n";
         cout << "  - Pride and Prejudice:      " << countWords(pride) << " words\n";
         cout << "  - Sense and Sensibility:    " << countWords(sense) << " words\n";
 
@@ -89,7 +87,6 @@ int main() {
         cout << "\n================================================\n";
         cout << "  ANALYSIS COMPLETE\n";
         cout << "================================================\n";
-        cout << "All algorithms have been executed.\n";
 
     } catch (const exception& e) {
         cerr << "\n[ERROR] " << e.what() << "\n\n";
