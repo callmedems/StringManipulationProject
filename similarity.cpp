@@ -12,8 +12,6 @@ using namespace std;
 
 // STAGE 5: LEVENSHTEIN EDIT DISTANCE
 
-// Calculate Levenshtein Distance between two strings
-// Returns the minimum number of single-character edits (insertions, deletions, substitutions)
 int levenshteinDistance(const string& s1, const string& s2) {
     size_t n = s1.size();
     size_t m = s2.size();

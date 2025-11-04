@@ -12,7 +12,7 @@
 using namespace std;
 
 
-//Counts number of words 
+
 size_t countWords(const string& text) {
     size_t wordCount = 0;
     bool inWord = false;
@@ -83,7 +83,7 @@ int main() {
         // STAGE 5: Jaccard Similarity
         jaccardComparison(pride, sense, "Pride and Prejudice", "Sense and Sensibility");
 
-        // Final Summary
+
         cout << "\n================================================\n";
         cout << "  ANALYSIS COMPLETE\n";
         cout << "================================================\n";

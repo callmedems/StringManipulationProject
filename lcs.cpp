@@ -87,7 +87,6 @@ const string& name1, const string& name2) {
 
     }
     
-    // Cálculos y Reporte
     // Usamos el tamaño completo del texto para la métrica de similitud
     double avgLen = (static_cast<double>(n1) + static_cast<double>(n2)) / 2.0;
     double similarity = (bestLen / avgLen) * 100.0;
